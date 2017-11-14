@@ -16,17 +16,12 @@
         function showResult() {
             $.ajax({
                 type: "get",
-                url: "/account/account_save",
+                url: "/account/accountCommit",
                 data: {
-                    "loginName": $("#username").val()
+                    "loginName": ["aad", "bb"]
                 },
                 success: function (result) {
-                    var success = result.success;
-                    if(success==true){
-                        alert(result.data.loginName)
-                    }else{
-                        alert(result.error)
-                    }
+                    alert(result)
                 }
             })
 //            showResultDiv(true);
@@ -82,11 +77,11 @@
 <div id="main">
     <!--保存成功或者失败的提示消息-->
     <div id="save_result_info" class="save_fail">保存失败，该身份证已经开通过账务账号！</div>
-    <form action="" method="get" class="main_form">
+    <form action="/account/accountform" method="get" class="main_form" accept-charset="utf-8">
         <!--必填项-->
         <div class="text_info clearfix"><span>姓名：</span></div>
         <div class="input_info">
-            <input type="text" value="张三" id="username"/>
+            <input type="text" value="张三" name="username"/>
             <span class="required">*</span>
             <div class="validate_msg_long">20长度以内的汉字、字母和数字的组合</div>
         </div>
@@ -174,7 +169,7 @@
         </div>
         <!--操作按钮-->
         <div class="button_info clearfix">
-            <input type="button" value="保存" class="btn_save" onclick="showResult()"/>
+            <input type="submit" value="保存" class="btn_save"/>
             <input type="button" value="取消" class="btn_save"/>
         </div>
     </form>

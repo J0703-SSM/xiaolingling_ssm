@@ -4,6 +4,7 @@ import com.lanou.base.domain.Account;
 import com.lanou.base.util.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -42,12 +43,26 @@ public class AccountController {
         Account account = new Account();
         account.setLoginName(loginName);
 
-        if ("".equals(loginName)){
-            return new Result<>(false,"用户名不能为空");
+        if ("".equals(loginName)) {
+            return new Result<>(false, "用户名不能为空");
         }
         System.out.println(loginName);
 
 
-        return new Result<>(true,account);
+        return new Result<>(true, account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/accountCommit", produces = "text/html; charset=utf-8")
+    public String accountCommit(@RequestParam(value = "loginName[]", required = false) String[] loginName) {
+        System.out.println(loginName);
+        return "成功";
+    }
+
+    @ResponseBody
+    @RequestMapping("/accountform")
+    public void accountform(String username) {
+
+        System.out.println(username);
     }
 }
