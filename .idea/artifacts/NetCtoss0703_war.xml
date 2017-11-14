@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="NetCtoss0703:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="NetCtoss0703.war">
+      <element id="artifact" artifact-name="NetCtoss0703:war exploded" />
+    </root>
+  </artifact>
+</component>
