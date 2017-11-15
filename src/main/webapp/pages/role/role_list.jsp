@@ -2,6 +2,7 @@
   Created by 蓝鸥科技有限公司  www.lanou3g.com.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page isELIgnored="false" %>
 <html>
 <head>
@@ -9,10 +10,25 @@
     <title></title>
     <link type="text/css" rel="stylesheet" media="all" href="../styles/global.css"/>
     <link type="text/css" rel="stylesheet" media="all" href="../styles/global_color.css"/>
+    <script type="application/javascript" src="/js/jquery-3.2.1.js"></script>
     <script language="javascript" type="text/javascript">
-        function deleteRole() {
+        function deleteRole(roleId) {
             var r = window.confirm("确定要删除此角色吗？");
-            document.getElementById("operate_result_info").style.display = "block";
+
+            if (r == true) {
+                /*发起保存更新的请求*/
+                $.ajax({
+                    type: "post",
+                    url: "/role/roleDelete",
+                    data: {
+                        "roleId": roleId
+                    },
+                    success: function (result) {
+                        document.getElementById("operate_result_info").style.display = "block";
+                        location.href = "/role/role_list";
+                    }
+                })
+            }
         }
     </script>
 </head>
@@ -60,42 +76,31 @@
                     <th class="width600">拥有的权限</th>
                     <th class="td_modi"></th>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>贾强</td>
-                    <td>角色管理、管理员管理、资费管理、账务账号、业务账号、账单、报表</td>
-                    <td>
-                        <input type="button" value="修改" class="btn_modify" onclick="location.href='role_modi';"/>
-                        <input type="button" value="删除" class="btn_delete" onclick="deleteRole();"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>贾强</td>
-                    <td>超级管理员、账单管理员</td>
-                    <td>
-                        <input type="button" value="修改" class="btn_modify"/>
-                        <input type="button" value="删除" class="btn_delete"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>贾强</td>
-                    <td>超级管理员、账单管理员</td>
-                    <td>
-                        <input type="button" value="修改" class="btn_modify"/>
-                        <input type="button" value="删除" class="btn_delete"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>贾强</td>
-                    <td>超级管理员、账单管理员</td>
-                    <td>
-                        <input type="button" value="修改" class="btn_modify"/>
-                        <input type="button" value="删除" class="btn_delete"/>
-                    </td>
-                </tr>
+                <c:if test="${roleInfos !=null and roleInfos.size() > 0}">
+                    <c:forEach items="${roleInfos}" var="role">
+                        <tr>
+                            <td>${role.roleId}</td>
+                            <td>${role.name}</td>
+                            <td>
+                                <c:if test="${role.moduleInfos != null and role.moduleInfos.size() >0}">
+                                    <c:forEach items="${role.moduleInfos}" var="module" varStatus="status">
+                                        ${module.name}
+                                        <c:if test="${!status.last}">
+                                            、
+                                        </c:if>
+                                    </c:forEach>
+                                </c:if>
+                            </td>
+                            <td>
+                                <input type="button" value="修改" class="btn_modify"
+                                       onclick="location.href='role_modi?roleId=${role.roleId}';"/>
+                                <input type="button" value="删除" class="btn_delete"
+                                       onclick="deleteRole(${role.roleId});"/>
+                            </td>
+                        </tr>
+                    </c:forEach>
+
+                </c:if>
             </table>
         </div>
         <!--分页-->
